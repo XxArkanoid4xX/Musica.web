@@ -34,7 +34,7 @@ export function IntroAnimation() {
                 className={cn(
                     "fixed flex items-center gap-3 transition-all duration-1000 ease-in-out",
                     stage === 'initial'
-                        ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-150"
+                        ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[4]"
                         : "top-6 left-6 scale-100" // Approximate sidebar position
                 )}
             >
