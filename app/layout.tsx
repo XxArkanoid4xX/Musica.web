@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/shared/sidebar';
 import { Navbar } from '@/components/shared/navbar';
 import { PlayerBar } from '@/components/player/player-bar';
 import { OnboardingModal } from '@/components/onboarding/onboarding-modal'; // Import Added
+import { IntroAnimation } from '@/components/shared/intro-animation';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({
                 )}
             >
                 <div className="flex h-screen overflow-hidden bg-background">
+                    <IntroAnimation />
                     {/* Sidebar Area - Fixed position with initial width reserved space */}
                     <aside className="fixed left-0 top-0 h-full hidden md:block z-50 w-20">
                         <Sidebar className="h-full w-full shadow-2xl" />

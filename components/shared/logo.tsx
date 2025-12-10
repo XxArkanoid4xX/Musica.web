@@ -22,7 +22,7 @@ export function Logo({ className, collapsed = false }: LogoProps) {
 
             {!collapsed && (
                 <span className="font-heading text-2xl font-black tracking-tighter text-white animate-in slide-in-from-left-4 fade-in duration-500 whitespace-nowrap">
-                    MuscAI
+                    Músic-AI
                 </span>
             )}
         </Link>
