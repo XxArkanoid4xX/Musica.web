@@ -53,9 +53,11 @@ export default function PlaylistPage({ params }: { params: Promise<{ id: string 
         // Assuming Deezer IDs are numeric (as string), UUIDs are longer and alphanumeric with hyphens usually
         // Simple check: if ID is short and numeric, it's deezer. If not found in local, try deezer.
         api.getPlaylist(resolvedParams.id).then((res) => {
-            if (!res.error) {
+            if (res && !res.error) {
                 setRemoteData(res);
             }
+            setLoading(false);
+        }).catch(() => {
             setLoading(false);
         });
     }, [resolvedParams.id, isLocal, localPlaylist]);
