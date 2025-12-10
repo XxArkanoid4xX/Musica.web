@@ -22,6 +22,7 @@ export function PlayerBar() {
         isPlaying,
         togglePlay,
         volume,
+        setVolume,
         currentTime,
         duration,
     } = usePlayerStore();
@@ -91,8 +92,20 @@ export function PlayerBar() {
             {/* Volume & Extras */}
             <div className="flex items-center justify-end gap-4 w-[30%]">
                 <Volume2 className="h-5 w-5 text-muted-foreground" />
-                <div className="w-24 h-1 bg-white/30 rounded-full relative">
-                    <div className="absolute top-0 left-0 bottom-0 bg-white rounded-full" style={{ width: `${volume * 100}%` }} />
+                <div className="group w-24 h-1 bg-white/30 rounded-full relative cursor-pointer flex items-center">
+                    <input
+                        type="range"
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={volume}
+                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    />
+                    <div
+                        className="absolute top-0 left-0 bottom-0 bg-white rounded-full transition-all group-hover:bg-green-500"
+                        style={{ width: `${volume * 100}%` }}
+                    />
                 </div>
                 <Maximize2 className="h-4 w-4 text-muted-foreground" />
             </div>

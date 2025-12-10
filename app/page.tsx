@@ -6,6 +6,7 @@ import { ArtworkCard } from "@/components/shared/artwork-card";
 import { SectionTitle } from "@/components/shared/section-title";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { api, DeezerTrack, DeezerAlbum, DeezerPlaylist } from "@/lib/api-service";
+import { HomePlayableTracks } from "@/components/home/home-playable-tracks";
 
 export default async function Home() {
     // Fetch real data from Deezer (Server-side)
@@ -23,20 +24,7 @@ export default async function Home() {
                     <h1 className="text-3xl font-bold font-heading animate-fade-in">Charts & Trending</h1>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {topTracks.slice(0, 8).map((track) => (
-                        <AnimatedSection key={track.id} delay={0.1}>
-                            {/* Linking tracks to an album view for now as we don't have track detail page */}
-                            <Link href={`/album/${track.album.id}`}>
-                                <DailyMixCard
-                                    title={track.title}
-                                    coverUrl={track.album.cover_medium}
-                                    accentColor="bg-zinc-800"
-                                />
-                            </Link>
-                        </AnimatedSection>
-                    ))}
-                </div>
+                <HomePlayableTracks tracks={topTracks.slice(0, 8)} />
             </section>
 
             {/* Top Playlists */}
