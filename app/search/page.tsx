@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Search, X, Play, Clock, Trash2, AlertCircle, Check, XCircle, MoreHorizontal } from "lucide-react";
 import Image from "next/image"; // Add missing import
