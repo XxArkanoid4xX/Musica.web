@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Logo } from "@/components/shared/logo";
-import { mockPlaylists } from "@/data/mock-data";
+import { usePlaylistStore } from "@/store/playlist-store";
 import {
     Home,
     Search,
@@ -20,6 +20,13 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function Sidebar({ className }: SidebarProps) {
     const pathname = usePathname();
+    const router = useRouter();
+    const { playlists, createPlaylist } = usePlaylistStore();
+
+    const handleCreatePlaylist = () => {
+        const newId = createPlaylist();
+        router.push(`/playlist/${newId}`);
+    };
 
     const mainNav = [
         { name: "Home", icon: Home, href: "/" },
@@ -57,7 +64,11 @@ export function Sidebar({ className }: SidebarProps) {
                         Playlists
                     </h3>
                     <div className="space-y-1">
-                        <Button variant="ghost" className="w-full justify-start gap-3">
+                        <Button
+                            variant="ghost"
+                            className="w-full justify-start gap-3 hover:text-white"
+                            onClick={handleCreatePlaylist}
+                        >
                             <PlusCircle className="h-5 w-5" />
                             Create Playlist
                         </Button>
@@ -76,10 +87,10 @@ export function Sidebar({ className }: SidebarProps) {
                 {/* Scrollable Playlist List */}
                 <ScrollArea className="h-[300px] px-1">
                     <div className="space-y-1 p-1">
-                        {mockPlaylists.map((playlist) => (
+                        {playlists.map((playlist) => (
                             <Link href={`/playlist/${playlist.id}`} key={playlist.id}>
                                 <Button
-                                    variant="ghost"
+                                    variant={pathname === `/playlist/${playlist.id}` ? "secondary" : "ghost"}
                                     className="w-full justify-start font-normal text-muted-foreground hover:text-foreground truncate"
                                 >
                                     <ListMusic className="mr-2 h-4 w-4 opacity-50" />

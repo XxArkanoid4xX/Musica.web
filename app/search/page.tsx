@@ -1,12 +1,11 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import { Search, X, Play, Clock, Trash2, AlertCircle, Check, XCircle } from "lucide-react";
+import { Search, X, Play, Clock, Trash2, AlertCircle, Check, XCircle, MoreHorizontal } from "lucide-react";
 import Image from "next/image"; // Add missing import
 import { searchTracks } from "@/app/actions/search"; // Import Server Action
 import { useSearchStore } from "@/store/search-store";
 import { DeezerTrack } from "@/lib/api-service";
 import { usePlayerStore } from "@/store/player-store"; // For playing tracks
+import { AddToPlaylistMenu } from "@/components/shared/add-to-playlist"; // New Component
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -129,8 +128,23 @@ export default function SearchPage() {
                                             Song • {track.artist.name}
                                         </span>
                                     </div>
-                                    <div className="text-sm text-muted-foreground font-mono">
+                                    <div className="flex items-center gap-4 text-sm text-muted-foreground font-mono">
                                         {Math.floor(track.duration / 60)}:{(track.duration % 60).toString().padStart(2, '0')}
+
+                                        {/* Context Menu Trigger */}
+                                        <AddToPlaylistMenu track={{
+                                            id: String(track.id),
+                                            title: track.title,
+                                            artist: track.artist.name,
+                                            album: track.album.title,
+                                            coverUrl: track.album.cover_medium,
+                                            duration: track.duration,
+                                            audioUrl: track.preview
+                                        }}>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
+                                                <MoreHorizontal className="h-4 w-4" />
+                                            </Button>
+                                        </AddToPlaylistMenu>
                                     </div>
                                 </div>
                             ))}
