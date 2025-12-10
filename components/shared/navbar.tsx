@@ -20,9 +20,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUserStore } from "@/store/user-store";
 
 export function Navbar() {
     const pathname = usePathname();
+    const { profile } = useUserStore();
 
     // Example breadcrumb generation logic
     const getPageTitle = () => {
@@ -61,10 +63,10 @@ export function Navbar() {
                         <DropdownMenuTrigger asChild>
                             <div className="flex items-center gap-3 cursor-pointer group">
                                 <span className="hidden text-sm font-medium text-white/80 md:inline-block group-hover:text-white transition-colors">
-                                    Antigravity User
+                                    {profile.name}
                                 </span>
                                 <Avatar className="h-9 w-9 border border-white/10 transition-transform group-hover:scale-105">
-                                    <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=800&q=80" alt="User" />
+                                    <AvatarImage src={profile.avatarUrl} alt={profile.name} />
                                     <AvatarFallback className="bg-primary/20 text-primary">
                                         <User className="h-4 w-4" />
                                     </AvatarFallback>
