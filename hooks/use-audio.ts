@@ -20,10 +20,16 @@ export function useAudio() {
         if (!audio || !currentTrack?.audioUrl) return;
 
         if (audio.src !== currentTrack.audioUrl) {
-            audio.src = currentTrack.audioUrl;
-            audio.load();
-            if (isPlaying) {
-                audio.play().catch(e => console.error("Play error", e));
+            if (currentTrack.audioUrl) {
+                audio.src = currentTrack.audioUrl;
+                audio.load();
+                if (isPlaying) {
+                    audio.play().catch(e => console.error("Play error", e));
+                }
+            } else {
+                // If url is invalid/empty, pause and do not load
+                audio.pause();
+                audio.src = "";
             }
         }
     }, [currentTrack]);

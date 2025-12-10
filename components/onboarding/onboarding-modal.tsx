@@ -36,13 +36,19 @@ export function OnboardingModal() {
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
 
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     useEffect(() => {
         // Prevent hydration mismatch by checking mounting or using a small timeout if needed
         // but store persistence handling usually works fine in useEffect
-        if (profile && !profile.hasOnboarded) {
+        if (isMounted && profile && !profile.hasOnboarded) {
             setIsOpen(true);
         }
-    }, [profile]);
+    }, [profile, isMounted]);
 
     const toggleGenre = (genre: string) => {
         setSelectedGenres(prev =>
