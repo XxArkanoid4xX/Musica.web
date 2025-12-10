@@ -1,98 +1,75 @@
-"use client";
+// app/page.tsx (Server Component)
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { DailyMixCard } from "@/components/shared/daily-mix-card";
 import { ArtworkCard } from "@/components/shared/artwork-card";
 import { SectionTitle } from "@/components/shared/section-title";
-import { mockMixes, mockPlaylists, mockAlbums } from "@/data/mock-data";
+import { AnimatedSection } from "@/components/shared/animated-section";
+import { api, DeezerTrack, DeezerAlbum, DeezerPlaylist } from "@/lib/api-service";
 
-export default function Home() {
-    const container = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
+export default async function Home() {
+    // Fetch real data from Deezer (Server-side)
+    const chart = await api.getChart();
 
-    const item = {
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 }
-    };
+    const topPlaylists: DeezerPlaylist[] = chart.playlists?.data || [];
+    const topAlbums: DeezerAlbum[] = chart.albums?.data || [];
+    const topTracks: DeezerTrack[] = chart.tracks?.data || [];
 
     return (
         <div className="flex flex-col space-y-10 min-h-full pb-8">
-            {/* Greeting Section (Good Morning) */}
+            {/* Greeting Section (Real Chart Tracks as Mock Mixes for now) */}
             <section>
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="mb-6 pl-1"
-                >
-                    <h1 className="text-3xl font-bold font-heading">Good Morning</h1>
-                </motion.div>
+                <div className="mb-6 pl-1">
+                    <h1 className="text-3xl font-bold font-heading animate-fade-in">Charts & Trending</h1>
+                </div>
 
-                <motion.div
-                    variants={container}
-                    initial="hidden"
-                    animate="show"
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-                >
-                    {mockMixes.slice(0, 6).map((mix) => (
-                        <motion.div key={mix.id} variants={item}>
-                            <Link href={`/playlist/${mix.id}`}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {topTracks.slice(0, 8).map((track) => (
+                        <AnimatedSection key={track.id} delay={0.1}>
+                            {/* Linking tracks to an album view for now as we don't have track detail page */}
+                            <Link href={`/album/${track.album.id}`}>
                                 <DailyMixCard
-                                    title={mix.title}
-                                    coverUrl={mix.coverUrl}
-                                    accentColor={mix.accent}
+                                    title={track.title}
+                                    coverUrl={track.album.cover_medium}
+                                    accentColor="bg-zinc-800"
                                 />
                             </Link>
-                        </motion.div>
+                        </AnimatedSection>
                     ))}
-                </motion.div>
+                </div>
             </section>
 
-            {/* Featured Playlists Section (Bento/Grid) */}
+            {/* Top Playlists */}
             <section>
-                <SectionTitle title="Made For You" subtitle="Curated playlists based on your taste" />
+                <SectionTitle title="Top Playlists" subtitle="Global hits right now" />
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    {mockPlaylists.map((playlist) => (
+                    {topPlaylists.slice(0, 10).map((playlist) => (
                         <Link href={`/playlist/${playlist.id}`} key={playlist.id}>
                             <ArtworkCard
                                 title={playlist.title}
-                                subtitle={playlist.description}
-                                coverUrl={playlist.coverUrl}
+                                subtitle={`By ${playlist.user.name}`}
+                                coverUrl={playlist.picture_xl}
                             />
                         </Link>
                     ))}
                 </div>
             </section>
 
-            {/* New Releases Section */}
+            {/* Top Albums */}
             <section>
-                <SectionTitle title="New Releases" subtitle="Fresh from the studio" />
+                <SectionTitle title="Top Albums" subtitle="Most streamed albums" />
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    {mockAlbums.map((album) => (
+                    {topAlbums.slice(0, 10).map((album) => (
                         <Link href={`/album/${album.id}`} key={album.id}>
                             <ArtworkCard
                                 title={album.title}
-                                subtitle={`${album.artist} • ${album.year}`}
-                                coverUrl={album.coverUrl}
+                                subtitle={album.artist.name}
+                                coverUrl={album.cover_xl}
                             />
                         </Link>
                     ))}
-                    {/* Dummy cards to fill space if needed */}
-                    <ArtworkCard
-                        title="Cyber City"
-                        subtitle="Various • 2024"
-                        coverUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"
-                    />
                 </div>
             </section>
         </div>
