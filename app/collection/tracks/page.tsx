@@ -92,7 +92,11 @@ export default function LikedSongsPage() {
                             >
                                 <div className="text-sm text-muted-foreground group-hover:text-white w-4 justify-center flex">
                                     {isCurrent && isPlaying ? (
-                                        <Image src="https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f93a2ef4.gif" width={14} height={14} alt="playing" />
+                                        <div className="flex items-end gap-[1px] h-3 w-3.5 justify-center pb-0.5">
+                                            <span className="w-1 bg-green-500 animate-[bounce_1s_infinite] h-full" style={{ animationDelay: "0ms" }} />
+                                            <span className="w-1 bg-green-500 animate-[bounce_1s_infinite] h-[60%]" style={{ animationDelay: "200ms" }} />
+                                            <span className="w-1 bg-green-500 animate-[bounce_1s_infinite] h-[80%]" style={{ animationDelay: "400ms" }} />
+                                        </div>
                                     ) : (
                                         <>
                                             <span className="group-hover:hidden text-white/60">{i + 1}</span>

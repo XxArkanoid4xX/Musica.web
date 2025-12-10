@@ -33,17 +33,20 @@ export function HomePlayableTracks({ tracks }: HomePlayableTracksProps) {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {tracks.map((track) => (
-                <AnimatedSection key={track.id} delay={0.1}>
-                    <div onClick={() => handlePlay(track)} className="cursor-pointer">
+            {tracks.map((track) => {
+                const isCurrent = currentTrack?.id === String(track.id);
+                return (
+                    <AnimatedSection key={track.id} delay={0.1}>
                         <DailyMixCard
                             title={track.title}
                             coverUrl={track.album.cover_medium}
                             accentColor="bg-zinc-800"
+                            isPlaying={isCurrent && isPlaying}
+                            onPlay={() => handlePlay(track)}
                         />
-                    </div>
-                </AnimatedSection>
-            ))}
+                    </AnimatedSection>
+                );
+            })}
         </div>
     );
 }
