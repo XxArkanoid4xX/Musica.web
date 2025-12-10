@@ -26,14 +26,14 @@ export default function RootLayout({
                     fontHeading.variable
                 )}
             >
-                <div className="flex h-screen overflow-hidden">
-                    {/* Sidebar Area - Fixed Width (Hidden on mobile for now) */}
-                    <aside className="hidden w-64 flex-none md:block">
-                        <Sidebar className="h-full w-full" />
+                <div className="flex h-screen overflow-hidden bg-background">
+                    {/* Sidebar Area - Fixed position with initial width reserved space */}
+                    <aside className="fixed left-0 top-0 h-full hidden md:block z-50 w-20">
+                        <Sidebar className="h-full w-full shadow-2xl" />
                     </aside>
 
-                    {/* Main Content Area */}
-                    <div className="flex flex-1 flex-col overflow-hidden relative z-10">
+                    {/* Main Content Area - Offset by collapsed sidebar width */}
+                    <div className="flex flex-1 flex-col overflow-hidden relative z-10 md:ml-20 transition-all duration-300">
                         {/* Navbar sits on top of the scrollable content visually or structurally */}
                         <Navbar />
 
@@ -50,6 +50,6 @@ export default function RootLayout({
                     </div>
                 </div>
             </body>
-        </html>
+        </html >
     );
 }

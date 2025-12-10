@@ -23,14 +23,14 @@ export default async function Home() {
 
             {/* Top Playlists */}
             <section>
-                <SectionTitle title="Top Playlists" subtitle="Global hits right now" />
+                <SectionTitle title="Listas Hits" subtitle="Lo que suena en el mundo" />
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {topPlaylists.slice(0, 10).map((playlist) => (
                         <Link href={`/playlist/${playlist.id}`} key={playlist.id}>
                             <ArtworkCard
                                 title={playlist.title}
-                                subtitle={`By ${playlist.user.name}`}
+                                subtitle={`De ${playlist.user.name}`}
                                 coverUrl={playlist.picture_xl}
                             />
                         </Link>
@@ -40,7 +40,7 @@ export default async function Home() {
 
             {/* Top Albums */}
             <section>
-                <SectionTitle title="Top Albums" subtitle="Most streamed albums" />
+                <SectionTitle title="Álbumes Top" subtitle="Los discos más escuchados" />
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {topAlbums.slice(0, 10).map((album) => (

@@ -65,7 +65,7 @@ export function HomeFeed({ initialChartTracks }: HomeFeedProps) {
                 <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <div className="mb-6 pl-1 flex items-center gap-2">
                         <Clock className="h-6 w-6 text-primary" />
-                        <h2 className="text-2xl font-bold font-heading">Jump Back In</h2>
+                        <h2 className="text-2xl font-bold font-heading">Volver a escuchar</h2>
                     </div>
                     <HomePlayableTracks tracks={recentTracks} />
                 </section>
@@ -77,16 +77,16 @@ export function HomeFeed({ initialChartTracks }: HomeFeedProps) {
                     {recommendedTracks.length > 0 ? (
                         <>
                             <Sparkles className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-                            <h2 className="text-2xl font-bold font-heading">Made For {profile.name.split(' ')[0]}</h2>
+                            <h2 className="text-2xl font-bold font-heading">Especialmente para {profile.name.split(' ')[0]}</h2>
                         </>
                     ) : (
-                        <h2 className="text-3xl font-bold font-heading">Global Top 100</h2>
+                        <h2 className="text-3xl font-bold font-heading">Top 100 Global</h2>
                     )}
                 </div>
 
                 {loadingRecs ? (
                     <div className="h-40 flex items-center justify-center text-muted-foreground">
-                        Curating your mix...
+                        Preparando tu mix...
                     </div>
                 ) : (
                     <HomePlayableTracks tracks={recommendedTracks.length > 0 ? recommendedTracks : initialChartTracks} />
