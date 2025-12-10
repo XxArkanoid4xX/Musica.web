@@ -6,7 +6,7 @@ import { ArtworkCard } from "@/components/shared/artwork-card";
 import { SectionTitle } from "@/components/shared/section-title";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { api, DeezerTrack, DeezerAlbum, DeezerPlaylist } from "@/lib/api-service";
-import { HomePlayableTracks } from "@/components/home/home-playable-tracks";
+import { HomeFeed } from "@/components/home/home-feed";
 
 export default async function Home() {
     // Fetch real data from Deezer (Server-side)
@@ -18,14 +18,8 @@ export default async function Home() {
 
     return (
         <div className="flex flex-col space-y-10 min-h-full pb-8">
-            {/* Greeting Section (Real Chart Tracks as Mock Mixes for now) */}
-            <section>
-                <div className="mb-6 pl-1">
-                    <h1 className="text-3xl font-bold font-heading animate-fade-in">Charts & Trending</h1>
-                </div>
-
-                <HomePlayableTracks tracks={topTracks.slice(0, 8)} />
-            </section>
+            {/* Dynamic Feed (Recently Played + Recommendations) */}
+            <HomeFeed initialChartTracks={topTracks.slice(0, 8)} />
 
             {/* Top Playlists */}
             <section>
