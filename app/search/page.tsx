@@ -1,15 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, X, Play, Clock, Trash2, AlertCircle, Check, XCircle, MoreHorizontal } from "lucide-react";
-import Image from "next/image"; // Add missing import
-import { searchTracks } from "@/app/actions/search"; // Import Server Action
+import { Search, X, Play, Clock, Trash2, AlertCircle, Check, XCircle, MoreHorizontal, Heart, Plus, ListMusic } from "lucide-react";
+import Image from "next/image";
+import { searchTracks } from "@/app/actions/search";
 import { useSearchStore } from "@/store/search-store";
+import { usePlaylistStore } from "@/store/playlist-store";
+import { useLibraryStore } from "@/store/library-store";
 import { DeezerTrack } from "@/lib/api-service";
-import { usePlayerStore } from "@/store/player-store"; // For playing tracks
-import { AddToPlaylistMenu } from "@/components/shared/add-to-playlist"; // New Component
+import { usePlayerStore } from "@/store/player-store";
+import { AddToPlaylistMenu } from "@/components/shared/add-to-playlist";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+    DropdownMenuSub,
+    DropdownMenuSubTrigger,
+    DropdownMenuSubContent,
+} from "@/components/ui/dropdown-menu";
 
 // Utility for debounce could be added, but simple timeout works for MVP
 function useDebounce(value: string, delay: number) {
@@ -26,10 +39,11 @@ export default function SearchPage() {
     const debouncedQuery = useDebounce(query, 500);
     const [results, setResults] = useState<DeezerTrack[]>([]);
     const [loading, setLoading] = useState(false);
-    const [deleteId, setDeleteId] = useState<number | null>(null); // Track ID pending deletion
 
     const { history, addToHistory, removeFromHistory, clearHistory } = useSearchStore();
     const { setTrack, togglePlay, currentTrack, isPlaying } = usePlayerStore();
+    const { playlists, addTrackToPlaylist, createPlaylist } = usePlaylistStore();
+    const { toggleLike, checkIsLiked } = useLibraryStore();
 
     // Search Effect
     useEffect(() => {
@@ -62,22 +76,17 @@ export default function SearchPage() {
         });
     };
 
-    const confirmDelete = (e: React.MouseEvent, id: number) => {
-        e.stopPropagation();
-        setDeleteId(id);
-    };
-
-    const executeDelete = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (deleteId) {
-            removeFromHistory(deleteId);
-            setDeleteId(null);
-        }
-    };
-
-    const cancelDelete = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setDeleteId(null);
+    const handleCreateAndAdd = (track: DeezerTrack) => {
+        const id = createPlaylist();
+        addTrackToPlaylist(id, {
+            id: String(track.id),
+            title: track.title,
+            artist: track.artist.name,
+            album: track.album.title,
+            coverUrl: track.album.cover_medium,
+            duration: track.duration,
+            audioUrl: track.preview
+        });
     };
 
     return (
@@ -169,55 +178,95 @@ export default function SearchPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {history.map((track) => (
-                            <div
-                                key={track.id}
-                                onClick={() => handlePlay(track, true)}
-                                className="relative flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group"
-                            >
-                                <div className="relative h-12 w-12 rounded overflow-hidden shrink-0">
-                                    <Image src={track.album.cover_medium} alt={track.title} fill className="object-cover" />
-                                </div>
-                                <div className="flex flex-col flex-1 min-w-0">
-                                    <span className={cn("font-medium truncate text-sm", currentTrack?.id === String(track.id) ? "text-primary" : "text-white")}>
-                                        {track.title}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground truncate">
-                                        {track.artist.name}
-                                    </span>
-                                </div>
+                        {history.map((track) => {
+                            const isLiked = checkIsLiked(String(track.id));
+                            return (
+                                <div
+                                    key={track.id}
+                                    onClick={() => handlePlay(track, true)}
+                                    className="relative flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group"
+                                >
+                                    <div className="relative h-12 w-12 rounded overflow-hidden shrink-0">
+                                        <Image src={track.album.cover_medium} alt={track.title} fill className="object-cover" />
+                                    </div>
+                                    <div className="flex flex-col flex-1 min-w-0">
+                                        <span className={cn("font-medium truncate text-sm", currentTrack?.id === String(track.id) ? "text-primary" : "text-white")}>
+                                            {track.title}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground truncate">
+                                            {track.artist.name}
+                                        </span>
+                                    </div>
 
-                                {/* Delete Action Area */}
-                                <div className="absolute right-2 flex items-center">
-                                    {deleteId === track.id ? (
-                                        <div className="flex items-center bg-zinc-900 rounded-md shadow-xl border border-white/10 overflow-hidden animate-in fade-in zoom-in duration-200">
-                                            <button
-                                                onClick={executeDelete}
-                                                className="p-2 hover:bg-red-500/20 text-red-500 transition-colors"
-                                                title="Confirm Delete"
-                                            >
-                                                <Check className="h-4 w-4" />
-                                            </button>
-                                            <div className="w-[1px] h-4 bg-white/10" />
-                                            <button
-                                                onClick={cancelDelete}
-                                                className="p-2 hover:bg-white/10 text-muted-foreground transition-colors"
-                                                title="Cancel"
-                                            >
-                                                <X className="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <button
-                                            onClick={(e) => confirmDelete(e, track.id)}
-                                            className="opacity-0 group-hover:opacity-100 p-2 text-muted-foreground hover:text-white transition-all"
-                                        >
-                                            <X className="h-4 w-4" />
-                                        </button>
-                                    )}
+                                    {/* Actions Menu */}
+                                    <div className="absolute right-2 flex items-center" onClick={(e) => e.stopPropagation()}>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end" className="w-56 bg-zinc-900 border-white/10 text-white z-50">
+
+                                                {/* Like Toggle */}
+                                                <DropdownMenuItem onClick={() => toggleLike({
+                                                    id: String(track.id),
+                                                    title: track.title,
+                                                    artist: track.artist.name,
+                                                    album: track.album.title,
+                                                    coverUrl: track.album.cover_medium,
+                                                    duration: track.duration,
+                                                    audioUrl: track.preview
+                                                })} className="cursor-pointer">
+                                                    <Heart className={cn("mr-2 h-4 w-4", isLiked ? "fill-green-500 text-green-500" : "")} />
+                                                    {isLiked ? "Liked" : "Like"}
+                                                </DropdownMenuItem>
+
+                                                {/* Add to Playlist Submenu */}
+                                                <DropdownMenuSub>
+                                                    <DropdownMenuSubTrigger className="cursor-pointer">
+                                                        <ListMusic className="mr-2 h-4 w-4" /> Add to Playlist
+                                                    </DropdownMenuSubTrigger>
+                                                    <DropdownMenuSubContent className="bg-zinc-900 border-white/10 text-white">
+                                                        <DropdownMenuItem onClick={() => handleCreateAndAdd(track)} className="cursor-pointer">
+                                                            <Plus className="mr-2 h-4 w-4" /> New Playlist
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuSeparator className="bg-white/10" />
+                                                        {playlists.map(p => (
+                                                            <DropdownMenuItem
+                                                                key={p.id}
+                                                                onClick={() => addTrackToPlaylist(p.id, {
+                                                                    id: String(track.id),
+                                                                    title: track.title,
+                                                                    artist: track.artist.name,
+                                                                    album: track.album.title,
+                                                                    coverUrl: track.album.cover_medium,
+                                                                    duration: track.duration,
+                                                                    audioUrl: track.preview
+                                                                })}
+                                                                className="cursor-pointer"
+                                                            >
+                                                                {p.title}
+                                                            </DropdownMenuItem>
+                                                        ))}
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuSub>
+
+                                                <DropdownMenuSeparator className="bg-white/10" />
+
+                                                {/* Delete Action */}
+                                                <DropdownMenuItem
+                                                    onClick={() => removeFromHistory(track.id)}
+                                                    className="text-red-500 hover:text-red-400 focus:text-red-400 cursor-pointer"
+                                                >
+                                                    <Trash2 className="mr-2 h-4 w-4" /> Remove from History
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                         {history.length === 0 && (
                             <div className="col-span-full py-10 text-center text-muted-foreground">
                                 <Search className="h-10 w-10 mx-auto mb-3 opacity-20" />

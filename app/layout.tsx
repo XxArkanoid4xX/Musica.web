@@ -3,7 +3,8 @@ import { fontSans, fontHeading } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Sidebar } from '@/components/shared/sidebar';
 import { Navbar } from '@/components/shared/navbar';
-import { PlayerBar } from '@/components/player/player-bar'; // Import Added
+import { PlayerBar } from '@/components/player/player-bar';
+import { OnboardingModal } from '@/components/onboarding/onboarding-modal'; // Import Added
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
 
                         {/* Player Bar Overlay */}
                         <PlayerBar />
+                        <OnboardingModal />
                     </div>
                 </div>
             </body>
