@@ -4,42 +4,41 @@
 
 @layer base {
   :root {
-    /* Base Colors - Zinc-like Palette for High-End feel */
-    --background: 240 10% 3.9%;   /* #09090b */
-    --foreground: 0 0% 98%;       /* #fafafa */
+    /* Premium Purple-Dark Palette */
+    --background: 260 30% 6%;
+    /* Casi negro con tinte morado muy oscuro */
+    --foreground: 0 0% 98%;
 
-    --card: 240 10% 4.5%;
+    --card: 260 25% 10%;
+    /* Ligeramente más claro para tarjetas */
     --card-foreground: 0 0% 98%;
- 
-    --popover: 240 10% 3.9%;
+
+    --popover: 260 30% 6%;
     --popover-foreground: 0 0% 98%;
- 
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
- 
-    --secondary: 240 3.7% 15.9%;
+
+    --primary: 270 95% 65%;
+    /* Morado vibrante eléctrico */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 20% 15%;
     --secondary-foreground: 0 0% 98%;
- 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
- 
-    --accent: 240 3.7% 15.9%;
+
+    --muted: 260 20% 15%;
+    --muted-foreground: 260 10% 65%;
+
+    --accent: 270 50% 20%;
     --accent-foreground: 0 0% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
- 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
 
-    /* Radius System */
-    --radius: 0.75rem;
+    --border: 260 20% 15%;
+    /* Bordes sutiles morados */
+    --input: 260 20% 15%;
+    --ring: 270 95% 65%;
 
-    /* Glassmorphism Variables */
-    --glass-background: rgba(9, 9, 11, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-blur: 16px;
+    --radius: 1rem;
+    /* Bordes más redondeados y modernos */
   }
 }
 
@@ -47,23 +46,67 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
-    /* Mesh gradient subtle background hint */
-    background-image: 
-      radial-gradient(circle at 50% 0%, rgba(120, 119, 198, 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 0% 100%, rgba(74, 85, 104, 0.05) 0%, transparent 30%);
+    /* Fondo con gradientes de luz morada ("Aurora Boreal" oscura) */
+    background-color: #050308;
+    /* Fallback */
+    background-image:
+      radial-gradient(at 0% 0%, rgba(88, 28, 135, 0.45) 0px, transparent 50%),
+      radial-gradient(at 90% 10%, rgba(124, 58, 237, 0.35) 0px, transparent 50%),
+      radial-gradient(at 20% 80%, rgba(139, 92, 246, 0.25) 0px, transparent 50%),
+      radial-gradient(at 80% 90%, rgba(76, 29, 149, 0.4) 0px, transparent 50%);
+    background-attachment: fixed;
+    /* Mantiene el fondo fijo al scrollear */
+    background-size: cover;
+  }
+
+  /* Custom Scrollbar for sleek look */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 99px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply backdrop-blur-[var(--glass-blur)] bg-[length:--glass-background] border border-[length:--glass-border];
-    background-color: var(--glass-background);
-    border-color: var(--glass-border);
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
-  
-  .text-balance {
-    text-wrap: balance;
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Efecto Glassmorphism Premium */
+  .glass {
+    @apply bg-black/40 backdrop-blur-xl border border-white/10;
+  }
+
+  /* Animación sutil de respiración para los orbes de fondo (opcional) */
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
   }
 }
