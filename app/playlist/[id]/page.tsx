@@ -2,9 +2,10 @@
 
 import { use, useEffect, useState } from "react";
 import Image from "next/image";
-import { Play, Clock, Heart, MoreHorizontal } from "lucide-react";
+import { Play, Clock, Heart, MoreHorizontal, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api-service";
+import { usePlayerStore } from "@/store/player-store"; // Import store
 
 function formatDuration(seconds: number) {
     const min = Math.floor(seconds / 60);
@@ -17,17 +18,37 @@ export default function PlaylistPage({ params }: { params: Promise<{ id: string 
     const [data, setData] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
 
+    // Store actions
+    const { setTrack, currentTrack, isPlaying, togglePlay } = usePlayerStore();
+
     useEffect(() => {
-        // Fetch REAL data client-side for details 
-        // (Or we could refactor this to Server Component too, but keeping client interactions is easier for Player connectivity later)
         api.getPlaylist(resolvedParams.id).then((res) => {
             setData(res);
             setLoading(false);
         });
     }, [resolvedParams.id]);
 
-    if (loading) return <div className="p-10 text-white">Loading playlist...</div>;
-    if (!data || data.error) return <div className="p-10 text-white">Playlist not found or API error.</div>;
+    const handlePlayTrack = (track: any) => {
+        // Check if same track is clicked
+        if (currentTrack?.id === String(track.id)) {
+            togglePlay();
+            return;
+        }
+
+        // Build Track object
+        setTrack({
+            id: String(track.id),
+            title: track.title,
+            artist: track.artist.name,
+            album: track.album?.title || data.title,
+            coverUrl: track.album?.cover_medium || data.picture_medium,
+            duration: track.duration,
+            audioUrl: track.preview // URL 30s MP3 from Deezer
+        });
+    };
+
+    if (loading) return <div className="p-10 text-white">Loading...</div>;
+    if (!data || data.error) return <div className="p-10 text-white">Playlist not found.</div>;
 
     return (
         <div className="flex flex-col h-full">
@@ -53,22 +74,21 @@ export default function PlaylistPage({ params }: { params: Promise<{ id: string 
                         {data.description || "No description provided."}
                     </p>
                     <div className="flex items-center gap-1 text-sm font-medium text-white/90">
-                        <span className="font-bold">{data.creator?.name || "Deezer"}</span>
+                        <span className="font-bold">{data.creator?.name}</span>
                         <span className="text-white/60">•</span>
                         <span className="text-white/60">{data.nb_tracks} tracks</span>
-                        <span className="text-white/60">•</span>
-                        <span className="text-white/60">{formatDuration(data.duration)}</span>
                     </div>
                 </div>
             </div>
 
             {/* Action Bar */}
             <div className="flex items-center gap-4 px-8 py-4 bg-black/20">
-                <Button size="icon" className="h-14 w-14 rounded-full bg-primary hover:bg-primary/90 hover:scale-105 transition-all shadow-lg text-primary-foreground">
+                <Button
+                    size="icon"
+                    className="h-14 w-14 rounded-full bg-primary hover:bg-primary/90 hover:scale-105 transition-all shadow-lg text-primary-foreground"
+                    onClick={() => data.tracks?.data[0] && handlePlayTrack(data.tracks.data[0])}
+                >
                     <Play className="h-7 w-7 ml-1 fill-current" />
-                </Button>
-                <Button variant="ghost" size="icon" className="h-10 w-10 text-muted-foreground hover:text-white">
-                    <Heart className="h-6 w-6" />
                 </Button>
             </div>
 
@@ -82,35 +102,50 @@ export default function PlaylistPage({ params }: { params: Promise<{ id: string 
                 </div>
 
                 <div className="flex flex-col">
-                    {data.tracks?.data.map((track: any, i: number) => (
-                        <div
-                            key={track.id}
-                            className="group grid grid-cols-[16px_4fr_3fr_minmax(60px,1fr)] gap-4 items-center rounded-md px-4 py-2 hover:bg-white/10 transition-colors cursor-pointer"
-                        >
-                            <div className="text-sm text-muted-foreground group-hover:text-white w-4 justify-center flex">
-                                <span className="group-hover:hidden">{i + 1}</span>
-                                <Play className="hidden group-hover:block h-3 w-3 fill-white" />
-                            </div>
-                            <div className="flex items-center gap-3 overflow-hidden">
-                                <div className="relative h-10 w-10 shrink-0 rounded overflow-hidden bg-zinc-800">
-                                    {/* Track images might be album covers */}
-                                    <Image src={track.album?.cover_small || data.picture_small} alt={track.title} fill className="object-cover" />
+                    {data.tracks?.data.map((track: any, i: number) => {
+                        const isCurrent = currentTrack?.id === String(track.id);
+                        return (
+                            <div
+                                key={track.id}
+                                onClick={() => handlePlayTrack(track)}
+                                className={cn(
+                                    "group grid grid-cols-[16px_4fr_3fr_minmax(60px,1fr)] gap-4 items-center rounded-md px-4 py-2 hover:bg-white/10 transition-colors cursor-pointer",
+                                    isCurrent && "bg-white/10"
+                                )}
+                            >
+                                <div className="text-sm text-muted-foreground group-hover:text-white w-4 justify-center flex">
+                                    {isCurrent && isPlaying ? (
+                                        <Image src="https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f93a2ef4.gif" width={14} height={14} alt="playing" />
+                                    ) : (
+                                        <>
+                                            <span className="group-hover:hidden text-white/60">{i + 1}</span>
+                                            <Play className="hidden group-hover:block h-3 w-3 fill-white" />
+                                        </>
+                                    )}
                                 </div>
-                                <div className="flex flex-col truncate">
-                                    <span className="font-medium text-white truncate">{track.title}</span>
-                                    <span className="text-xs text-muted-foreground group-hover:text-white/80">{track.artist?.name}</span>
+                                <div className="flex items-center gap-3 overflow-hidden">
+                                    <div className="relative h-10 w-10 shrink-0 rounded overflow-hidden bg-zinc-800">
+                                        <Image src={track.album?.cover_small || data.picture_small} alt={track.title} fill className="object-cover" />
+                                    </div>
+                                    <div className="flex flex-col truncate">
+                                        <span className={cn("font-medium truncate", isCurrent ? "text-primary" : "text-white")}>{track.title}</span>
+                                        <span className="text-xs text-muted-foreground group-hover:text-white/80">{track.artist?.name}</span>
+                                    </div>
+                                </div>
+                                <div className="text-sm text-muted-foreground truncate group-hover:text-white/80 hidden md:block">
+                                    {track.album?.title}
+                                </div>
+                                <div className="flex justify-end text-sm text-muted-foreground font-mono group-hover:text-white/80">
+                                    {formatDuration(track.duration)}
                                 </div>
                             </div>
-                            <div className="text-sm text-muted-foreground truncate group-hover:text-white/80 hidden md:block">
-                                {track.album?.title}
-                            </div>
-                            <div className="flex justify-end text-sm text-muted-foreground font-mono group-hover:text-white/80">
-                                {formatDuration(track.duration)}
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
     );
 }
+
+// Helper needed for `cn` call
+import { cn } from "@/lib/utils";

@@ -7,7 +7,7 @@ export interface DeezerTrack {
     duration: number;
     preview: string;
     artist: { name: string; picture_medium: string; picture_xl: string };
-    album: { title: string; cover_medium: string; cover_xl: string };
+    album: { id: number; title: string; cover_medium: string; cover_xl: string };
 }
 
 export interface DeezerPlaylist {

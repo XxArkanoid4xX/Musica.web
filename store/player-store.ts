@@ -1,50 +1,56 @@
 import { create } from 'zustand';
-import { Track } from '@/types';
+
+export interface TrackData {
+    id: string;
+    title: string;
+    artist: string;
+    album: string;
+    coverUrl: string;
+    duration: number;
+    audioUrl?: string;
+}
 
 interface PlayerState {
     isPlaying: boolean;
-    currentTrack: Track | null;
+    currentTrack: TrackData | null;
     volume: number;
-    isMuted: boolean;
-    queue: Track[]; // Simplificado para esta fase
+    currentTime: number;
+    duration: number; // Duration of the playing audio (preview is 30s)
 
     // Actions
     play: () => void;
     pause: () => void;
     togglePlay: () => void;
-    setTrack: (track: Track) => void;
-    setVolume: (volume: number) => void;
-    toggleMute: () => void;
-    nextTrack: () => void; // Mock logic
-    previousTrack: () => void; // Mock logic
+    setTrack: (track: TrackData) => void;
+    setVolume: (vol: number) => void;
+    setCurrentTime: (time: number) => void;
+    setDuration: (duration: number) => void;
+    seekTo: (time: number) => void; // Placeholder for now
 }
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
     isPlaying: false,
     currentTrack: null,
     volume: 1, // 100%
-    isMuted: false,
-    queue: [],
+    currentTime: 0,
+    duration: 0,
 
     play: () => set({ isPlaying: true }),
     pause: () => set({ isPlaying: false }),
     togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
 
-    setTrack: (track: Track) => set({
+    setTrack: (track) => set({
         currentTrack: track,
-        isPlaying: true // Auto-play when track is set
+        isPlaying: true, // Auto play on set
+        currentTime: 0,
+        duration: track.duration || 30 // Default to preview duration if not set
     }),
 
-    setVolume: (volume: number) => set({ volume }),
+    setVolume: (vol) => set({ volume: vol }),
 
-    toggleMute: () => set((state) => ({ isMuted: !state.isMuted })),
+    setCurrentTime: (time) => set({ currentTime: time }),
 
-    // Mock navigation logic - en una app real usaría el índice de la cola
-    nextTrack: () => {
-        console.log("Next track triggered");
-    },
+    setDuration: (duration) => set({ duration }),
 
-    previousTrack: () => {
-        console.log("Previous track triggered");
-    }
+    seekTo: (time) => set({ currentTime: time }),
 }));

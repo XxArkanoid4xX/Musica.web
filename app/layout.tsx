@@ -3,6 +3,7 @@ import { fontSans, fontHeading } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Sidebar } from '@/components/shared/sidebar';
 import { Navbar } from '@/components/shared/navbar';
+import { PlayerBar } from '@/components/player/player-bar'; // Import Added
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -41,6 +42,9 @@ export default function RootLayout({
                                 {children}
                             </div>
                         </main>
+
+                        {/* Player Bar Overlay */}
+                        <PlayerBar />
                     </div>
                 </div>
             </body>
