@@ -1,11 +1,13 @@
 "use client";
 
 import { usePlayerStore } from "@/store/player-store";
+import { useLibraryStore } from "@/store/library-store"; // Import
 import { useAudio } from "@/hooks/use-audio";
-import { Play, Pause, SkipBack, SkipForward, Volume2, Maximize2 } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, Maximize2, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 function formatTime(seconds: number) {
     if (!seconds || isNaN(seconds)) return "0:00";
@@ -24,8 +26,12 @@ export function PlayerBar() {
         duration,
     } = usePlayerStore();
 
+    const { toggleLike, checkIsLiked } = useLibraryStore();
+
     // Initialize audio hook logic (side effects)
     useAudio();
+
+    const isLiked = currentTrack ? checkIsLiked(currentTrack.id) : false;
 
     if (!currentTrack) return null;
 
@@ -36,10 +42,19 @@ export function PlayerBar() {
                 <div className="relative h-14 w-14 rounded overflow-hidden bg-zinc-800">
                     <Image src={currentTrack.coverUrl} fill alt={currentTrack.title} className="object-cover" />
                 </div>
-                <div className="flex flex-col overflow-hidden">
+                <div className="flex flex-col overflow-hidden min-w-0">
                     <span className="font-bold text-sm text-white truncate">{currentTrack.title}</span>
                     <span className="text-xs text-muted-foreground truncate">{currentTrack.artist}</span>
                 </div>
+                {/* Heart Button */}
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    className={cn("text-muted-foreground hover:text-white shrink-0 ml-2", isLiked && "text-green-500 hover:text-green-400")}
+                    onClick={() => toggleLike(currentTrack)}
+                >
+                    <Heart className={cn("h-5 w-5", isLiked && "fill-current")} />
+                </Button>
             </div>
 
             {/* Controls */}
@@ -66,10 +81,10 @@ export function PlayerBar() {
                         {/* Progress Bar */}
                         <div
                             className="absolute top-0 left-0 bottom-0 bg-white rounded-full group-hover:bg-green-500 transition-colors"
-                            style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                            style={{ width: `${(currentTime / (duration || 30)) * 100}%` }}
                         />
                     </div>
-                    <span className="text-xs text-muted-foreground font-mono w-10">{formatTime(duration)}</span>
+                    <span className="text-xs text-muted-foreground font-mono w-10">{formatTime(duration || 30)}</span>
                 </div>
             </div>
 

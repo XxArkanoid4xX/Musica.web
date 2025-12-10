@@ -61,10 +61,15 @@ export function Sidebar({ className }: SidebarProps) {
                             <PlusCircle className="h-5 w-5" />
                             Create Playlist
                         </Button>
-                        <Button variant="ghost" className="w-full justify-start gap-3">
-                            <Heart className="h-5 w-5 text-rose-500" />
-                            Liked Songs
-                        </Button>
+                        {/* Liked Songs Link */}
+                        <Link href="/collection/tracks">
+                            <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-white">
+                                <div className="flex items-center justify-center h-5 w-5 rounded bg-gradient-to-br from-purple-600 to-blue-600 opacity-90">
+                                    <Heart className="h-3 w-3 text-white fill-white" />
+                                </div>
+                                <span className={cn(pathname === '/collection/tracks' && "text-white font-medium")}>Liked Songs</span>
+                            </Button>
+                        </Link>
                     </div>
                 </div>
 
@@ -72,25 +77,15 @@ export function Sidebar({ className }: SidebarProps) {
                 <ScrollArea className="h-[300px] px-1">
                     <div className="space-y-1 p-1">
                         {mockPlaylists.map((playlist) => (
-                            <Button
-                                key={playlist.id}
-                                variant="ghost"
-                                className="w-full justify-start font-normal text-muted-foreground hover:text-foreground truncate"
-                            >
-                                <ListMusic className="mr-2 h-4 w-4 opacity-50" />
-                                <span className="truncate">{playlist.title}</span>
-                            </Button>
-                        ))}
-                        {/* Generating extra dummy items to show scrolling if needed */}
-                        {Array.from({ length: 5 }).map((_, i) => (
-                            <Button
-                                key={`dummy-${i}`}
-                                variant="ghost"
-                                className="w-full justify-start font-normal text-muted-foreground hover:text-foreground truncate opacity-50"
-                            >
-                                <ListMusic className="mr-2 h-4 w-4" />
-                                Classical Essentials {i + 1}
-                            </Button>
+                            <Link href={`/playlist/${playlist.id}`} key={playlist.id}>
+                                <Button
+                                    variant="ghost"
+                                    className="w-full justify-start font-normal text-muted-foreground hover:text-foreground truncate"
+                                >
+                                    <ListMusic className="mr-2 h-4 w-4 opacity-50" />
+                                    <span className="truncate">{playlist.title}</span>
+                                </Button>
+                            </Link>
                         ))}
                     </div>
                 </ScrollArea>
