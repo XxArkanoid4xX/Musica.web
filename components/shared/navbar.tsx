@@ -7,9 +7,19 @@ import {
     ChevronLeft,
     ChevronRight,
     Bell,
-    User
+    User,
+    Settings
 } from "lucide-react";
 import { cn } from '@/lib/utils';
+import Link from "next/link";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
     const pathname = usePathname();
@@ -47,15 +57,41 @@ export function Navbar() {
                 </Button>
 
                 <div className="flex items-center gap-3 pl-2 border-l border-white/10">
-                    <span className="hidden text-sm font-medium text-white/80 md:inline-block">
-                        Antigravity User
-                    </span>
-                    <Avatar className="h-9 w-9 border border-white/10 transition-transform hover:scale-105 cursor-pointer">
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                        <AvatarFallback className="bg-primary/20 text-primary">
-                            <User className="h-4 w-4" />
-                        </AvatarFallback>
-                    </Avatar>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <div className="flex items-center gap-3 cursor-pointer group">
+                                <span className="hidden text-sm font-medium text-white/80 md:inline-block group-hover:text-white transition-colors">
+                                    Antigravity User
+                                </span>
+                                <Avatar className="h-9 w-9 border border-white/10 transition-transform group-hover:scale-105">
+                                    <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=800&q=80" alt="User" />
+                                    <AvatarFallback className="bg-primary/20 text-primary">
+                                        <User className="h-4 w-4" />
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-56 glass border-white/10 text-white bg-black/80 backdrop-blur-xl">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator className="bg-white/10" />
+                            <Link href="/profile">
+                                <DropdownMenuItem className="cursor-pointer hover:bg-white/10 focus:bg-white/10">
+                                    <User className="mr-2 h-4 w-4" />
+                                    <span>Profile</span>
+                                </DropdownMenuItem>
+                            </Link>
+                            <Link href="/settings">
+                                <DropdownMenuItem className="cursor-pointer hover:bg-white/10 focus:bg-white/10">
+                                    <Settings className="mr-2 h-4 w-4" />
+                                    <span>Settings</span>
+                                </DropdownMenuItem>
+                            </Link>
+                            <DropdownMenuSeparator className="bg-white/10" />
+                            <DropdownMenuItem className="cursor-pointer text-red-400 hover:text-red-300 hover:bg-red-900/20 focus:bg-red-900/20">
+                                Log out
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </header>
