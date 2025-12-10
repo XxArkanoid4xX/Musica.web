@@ -4,8 +4,9 @@ import { cn } from '@/lib/utils';
 import { Sidebar } from '@/components/shared/sidebar';
 import { Navbar } from '@/components/shared/navbar';
 import { PlayerBar } from '@/components/player/player-bar';
-import { OnboardingModal } from '@/components/onboarding/onboarding-modal'; // Import Added
+import { OnboardingModal } from '@/components/onboarding/onboarding-modal';
 import { IntroAnimation } from '@/components/shared/intro-animation';
+import { NeonBackground } from '@/components/shared/neon-background';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -27,7 +28,8 @@ export default function RootLayout({
                     fontHeading.variable
                 )}
             >
-                <div className="flex h-screen overflow-hidden bg-background">
+                <div className="flex h-screen overflow-hidden bg-background relative">
+                    <NeonBackground />
                     <IntroAnimation />
                     {/* Sidebar Area - Fixed position with initial width reserved space */}
                     <aside className="fixed left-0 top-0 h-full hidden md:block z-50 w-20">
