@@ -29,19 +29,19 @@ export function NeonBackground() {
 
     return (
         <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-            {/* Neon Border Frame */}
-            <div className="absolute inset-0 z-10 border-[1px] border-purple-500/20 shadow-[inset_0_0_60px_rgba(168,85,247,0.3)] animate-pulse-slow">
-                <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
-                <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
-                <div className="absolute inset-y-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-purple-500 to-transparent opacity-50"></div>
-                <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-purple-500 to-transparent opacity-50"></div>
+            {/* Neon Border Frame - Intensified */}
+            <div className="absolute inset-0 z-10 border-[2px] border-purple-500/40 shadow-[inset_0_0_100px_rgba(168,85,247,0.5)] animate-pulse-slow">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-80 shadow-[0_0_20px_rgba(168,85,247,1)]"></div>
+                <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-80 shadow-[0_0_20px_rgba(168,85,247,1)]"></div>
+                <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-transparent via-purple-400 to-transparent opacity-80 shadow-[0_0_20px_rgba(168,85,247,1)]"></div>
+                <div className="absolute inset-y-0 right-0 w-[2px] bg-gradient-to-b from-transparent via-purple-400 to-transparent opacity-80 shadow-[0_0_20px_rgba(168,85,247,1)]"></div>
             </div>
 
             {/* Stars */}
             {stars.map((star) => (
                 <div
                     key={star.id}
-                    className="absolute rounded-full bg-white shadow-[0_0_4px_#fff,0_0_8px_#a855f7]"
+                    className="absolute rounded-full bg-white shadow-[0_0_6px_#fff,0_0_15px_#a855f7]"
                     style={{
                         top: `${star.top}%`,
                         left: `${star.left}%`,

@@ -43,8 +43,8 @@ export function IntroAnimation() {
                 </div>
 
                 <span className={cn(
-                    "font-heading text-3xl font-black tracking-tighter text-white whitespace-nowrap overflow-hidden transition-all duration-1000",
-                    stage === 'initial' ? "w-0 opacity-0" : "w-[200px] opacity-100"
+                    "font-heading text-3xl font-black tracking-tighter text-white whitespace-nowrap overflow-hidden transition-all duration-1000 drop-shadow-[0_0_15px_rgba(192,132,252,1)]",
+                    stage === 'initial' ? "w-0 opacity-0" : "w-[250px] opacity-100"
                 )}>
                     Músic-AI
                 </span>
