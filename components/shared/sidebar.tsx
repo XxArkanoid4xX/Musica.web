@@ -40,13 +40,14 @@ export function Sidebar({ className }: SidebarProps) {
             className
         )}>
             {/* Header / Logo */}
-            <div className="px-5 pb-6 pt-6 flex items-center h-16">
-                {/* Compact Logo */}
-                <div className="flex-shrink-0 group-hover/sidebar:hidden transition-all text-2xl font-black text-primary">
-                    M.
+            <div className="px-0 flex items-center justify-center h-20 w-full overflow-hidden shrink-0">
+                {/* Compact Logo (Visible by default, hidden on hover) */}
+                <div className="group-hover/sidebar:hidden transition-all duration-300">
+                    <Logo collapsed={true} className="justify-center px-0" />
                 </div>
-                {/* Full Logo */}
-                <div className="hidden group-hover/sidebar:block min-w-[150px] animate-in fade-in duration-200">
+
+                {/* Full Logo (Hidden by default, visible on hover with animation) */}
+                <div className="hidden group-hover/sidebar:flex w-full px-6 animate-in fade-in slide-in-from-left-4 duration-300">
                     <Logo />
                 </div>
             </div>
