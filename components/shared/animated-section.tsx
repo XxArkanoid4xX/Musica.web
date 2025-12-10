@@ -1,15 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay }}
+        <div
+            className="animate-fade-in opacity-0"
+            style={{
+                animationDelay: `${delay}s`,
+                animationFillMode: 'forwards'
+            }}
         >
             {children}
-        </motion.div>
+        </div>
     );
 }
