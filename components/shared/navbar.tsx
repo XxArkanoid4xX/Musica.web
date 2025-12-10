@@ -21,6 +21,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserStore } from "@/store/user-store";
+import { NotificationsMenu } from "@/components/shared/notifications-menu";
 
 export function Navbar() {
     const pathname = usePathname();
@@ -54,9 +55,7 @@ export function Navbar() {
 
             {/* Right: User Actions */}
             <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-white">
-                    <Bell className="h-5 w-5" />
-                </Button>
+                <NotificationsMenu />
 
                 <div className="flex items-center gap-3 pl-2 border-l border-white/10">
                     <DropdownMenu>
