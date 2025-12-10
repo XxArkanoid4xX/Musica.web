@@ -6,7 +6,7 @@ import { usePlayerStore } from "@/store/player-store";
 
 export function useAudio() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { currentTrack, isPlaying, volume, play, pause, nextTrack, currentTime, duration, setCurrentTime, setDuration: setStoreDuration } = usePlayerStore();
+    const { currentTrack, isPlaying, volume, play, pause, currentTime, duration, setCurrentTime, setDuration: setStoreDuration } = usePlayerStore();
 
     useEffect(() => {
         if (!audioRef.current) {
