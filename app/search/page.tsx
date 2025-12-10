@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { Search, X, Play, Clock, Trash2, AlertCircle, Check, XCircle } from "lucide-react";
 import Image from "next/image"; // Add missing import
+import { searchTracks } from "@/app/actions/search"; // Import Server Action
 import { useSearchStore } from "@/store/search-store";
-import { api, DeezerTrack } from "@/lib/api-service";
+import { DeezerTrack } from "@/lib/api-service";
 import { usePlayerStore } from "@/store/player-store"; // For playing tracks
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,8 @@ export default function SearchPage() {
     useEffect(() => {
         if (debouncedQuery.trim().length > 0) {
             setLoading(true);
-            api.search(debouncedQuery).then(res => {
+            // Call Server Action
+            searchTracks(debouncedQuery).then(res => {
                 setResults(res.data || []);
                 setLoading(false);
             });
