@@ -25,6 +25,10 @@ export function PlayerBar() {
         setVolume,
         currentTime,
         duration,
+        playNext,
+        playPrevious,
+        queue,
+        currentIndex
     } = usePlayerStore();
 
     const { toggleLike, checkIsLiked } = useLibraryStore();
@@ -33,6 +37,8 @@ export function PlayerBar() {
     useAudio();
 
     const isLiked = currentTrack ? checkIsLiked(currentTrack.id) : false;
+    const hasNext = queue.length > 0 && currentIndex < queue.length - 1;
+    const hasPrevious = queue.length > 0 && (currentIndex > 0 || currentTime > 3);
 
     if (!currentTrack) return null;
 
@@ -61,7 +67,13 @@ export function PlayerBar() {
             {/* Controls */}
             <div className="flex flex-col items-center gap-2 w-[40%]">
                 <div className="flex items-center gap-6">
-                    <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-white" onClick={() => { }}>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className={cn("text-muted-foreground hover:text-white", (!hasPrevious && "opacity-50 cursor-not-allowed hover:text-muted-foreground"))}
+                        onClick={playPrevious}
+                        disabled={!hasPrevious}
+                    >
                         <SkipBack className="h-5 w-5 fill-current" />
                     </Button>
                     <Button
@@ -71,7 +83,13 @@ export function PlayerBar() {
                     >
                         {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Play className="h-5 w-5 fill-current ml-0.5" />}
                     </Button>
-                    <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-white" onClick={() => { }}>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className={cn("text-muted-foreground hover:text-white", (!hasNext && "opacity-50 cursor-not-allowed hover:text-muted-foreground"))}
+                        onClick={playNext}
+                        disabled={!hasNext}
+                    >
                         <SkipForward className="h-5 w-5 fill-current" />
                     </Button>
                 </div>

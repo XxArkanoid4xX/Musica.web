@@ -6,7 +6,7 @@ import { usePlayerStore } from "@/store/player-store";
 
 export function useAudio() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { currentTrack, isPlaying, volume, play, pause, currentTime, duration, setCurrentTime, setDuration: setStoreDuration } = usePlayerStore();
+    const { currentTrack, isPlaying, volume, play, pause, currentTime, duration, setCurrentTime, setDuration: setStoreDuration, playNext } = usePlayerStore();
 
     useEffect(() => {
         if (!audioRef.current) {
@@ -67,9 +67,7 @@ export function useAudio() {
         };
 
         const handleEnded = () => {
-            // Auto next track logic would go here
-            pause();
-            setCurrentTime(0);
+            playNext();
         };
 
         audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -81,7 +79,7 @@ export function useAudio() {
             audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
             audio.removeEventListener("ended", handleEnded);
         };
-    }, [setCurrentTime, setStoreDuration, pause]);
+    }, [setCurrentTime, setStoreDuration, pause, playNext]);
 
     return audioRef.current;
 }
