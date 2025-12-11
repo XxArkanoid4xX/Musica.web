@@ -9,7 +9,7 @@ import { useSettingsStore } from "@/store/settings-store";
 function SettingSection({ title, children }: { title: string, children: React.ReactNode }) {
     return (
         <div className="mb-8">
-            <h2 className="text-xl font-bold font-heading mb-4 border-b border-white/10 pb-2">{title}</h2>
+            <h2 className="text-xl font-bold font-heading mb-4 border-b border-border pb-2 text-foreground">{title}</h2>
             <div className="space-y-4">
                 {children}
             </div>
@@ -19,13 +19,13 @@ function SettingSection({ title, children }: { title: string, children: React.Re
 
 function SettingItem({ icon: Icon, title, description, action }: any) {
     return (
-        <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+        <div className="flex items-center justify-between p-4 rounded-lg bg-card border border-border/50 hover:bg-accent/50 transition-colors">
             <div className="flex items-center gap-4">
-                <div className="p-2 rounded-full bg-white/10 text-white">
+                <div className="p-2 rounded-full bg-primary/10 text-primary">
                     <Icon className="h-5 w-5" />
                 </div>
                 <div>
-                    <h3 className="font-medium text-white">{title}</h3>
+                    <h3 className="font-medium text-foreground">{title}</h3>
                     <p className="text-sm text-muted-foreground">{description}</p>
                 </div>
             </div>
@@ -172,7 +172,7 @@ export default function SettingsPage() {
 
             <SettingSection title={t.about}>
                 <div className="p-4 text-center text-muted-foreground text-sm flex flex-col gap-1">
-                    <p className="font-bold text-white">Músic-AI v1.0.0 Alpha</p>
+                    <p className="font-bold text-foreground">Músic-AI v1.0.0 Alpha</p>
                     <p>Designed with ❤️ by Antigravity</p>
                     {sessionId && <p className="text-xs mt-2 opacity-50">Session ID: {sessionId}</p>}
                 </div>

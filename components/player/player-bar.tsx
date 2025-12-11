@@ -43,21 +43,21 @@ export function PlayerBar() {
     if (!currentTrack) return null;
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 h-24 bg-black/90 border-t border-white/10 backdrop-blur-lg z-50 px-4 flex items-center justify-between">
+        <div className="fixed bottom-0 left-0 right-0 h-24 bg-card/95 border-t border-border backdrop-blur-xl z-50 px-4 flex items-center justify-between transition-colors duration-300">
             {/* Track Info */}
             <div className="flex items-center gap-4 w-[30%]">
-                <div className="relative h-14 w-14 rounded overflow-hidden bg-zinc-800">
+                <div className="relative h-14 w-14 rounded overflow-hidden bg-muted">
                     <Image src={currentTrack.coverUrl} fill alt={currentTrack.title} className="object-cover" />
                 </div>
                 <div className="flex flex-col overflow-hidden min-w-0">
-                    <span className="font-bold text-sm text-white truncate">{currentTrack.title}</span>
+                    <span className="font-bold text-sm text-foreground truncate">{currentTrack.title}</span>
                     <span className="text-xs text-muted-foreground truncate">{currentTrack.artist}</span>
                 </div>
                 {/* Heart Button */}
                 <Button
                     size="icon"
                     variant="ghost"
-                    className={cn("text-muted-foreground hover:text-white shrink-0 ml-2", isLiked && "text-green-500 hover:text-green-400")}
+                    className={cn("text-muted-foreground hover:text-primary shrink-0 ml-2", isLiked && "text-primary hover:text-primary/80")}
                     onClick={() => toggleLike(currentTrack)}
                 >
                     <Heart className={cn("h-5 w-5", isLiked && "fill-current")} />
@@ -70,7 +70,7 @@ export function PlayerBar() {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className={cn("text-muted-foreground hover:text-white", (!hasPrevious && "opacity-50 cursor-not-allowed hover:text-muted-foreground"))}
+                        className={cn("text-muted-foreground hover:text-primary", (!hasPrevious && "opacity-50 cursor-not-allowed hover:text-muted-foreground"))}
                         onClick={playPrevious}
                         disabled={!hasPrevious}
                     >
@@ -78,7 +78,7 @@ export function PlayerBar() {
                     </Button>
                     <Button
                         size="icon"
-                        className="h-10 w-10 rounded-full bg-white text-black hover:scale-105 transition-transform"
+                        className="h-10 w-10 rounded-full bg-primary text-primary-foreground hover:scale-105 transition-transform shadow-lg shadow-primary/20"
                         onClick={togglePlay}
                     >
                         {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Play className="h-5 w-5 fill-current ml-0.5" />}
@@ -86,7 +86,7 @@ export function PlayerBar() {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className={cn("text-muted-foreground hover:text-white", (!hasNext && "opacity-50 cursor-not-allowed hover:text-muted-foreground"))}
+                        className={cn("text-muted-foreground hover:text-primary", (!hasNext && "opacity-50 cursor-not-allowed hover:text-muted-foreground"))}
                         onClick={playNext}
                         disabled={!hasNext}
                     >
@@ -96,10 +96,10 @@ export function PlayerBar() {
 
                 <div className="flex items-center gap-2 w-full max-w-md">
                     <span className="text-xs text-muted-foreground font-mono w-10 text-right">{formatTime(currentTime)}</span>
-                    <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden relative group cursor-pointer">
+                    <div className="flex-1 h-1 bg-secondary rounded-full overflow-hidden relative group cursor-pointer">
                         {/* Progress Bar */}
                         <div
-                            className="absolute top-0 left-0 bottom-0 bg-white rounded-full group-hover:bg-green-500 transition-colors"
+                            className="absolute top-0 left-0 bottom-0 bg-primary rounded-full group-hover:bg-primary/80 transition-colors"
                             style={{ width: `${(currentTime / (duration || 30)) * 100}%` }}
                         />
                     </div>
@@ -110,7 +110,7 @@ export function PlayerBar() {
             {/* Volume & Extras */}
             <div className="flex items-center justify-end gap-4 w-[30%]">
                 <Volume2 className="h-5 w-5 text-muted-foreground" />
-                <div className="group w-24 h-1 bg-white/30 rounded-full relative cursor-pointer flex items-center">
+                <div className="group w-24 h-1 bg-secondary rounded-full relative cursor-pointer flex items-center">
                     <input
                         type="range"
                         min={0}
@@ -121,7 +121,7 @@ export function PlayerBar() {
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     <div
-                        className="absolute top-0 left-0 bottom-0 bg-white rounded-full transition-all group-hover:bg-green-500"
+                        className="absolute top-0 left-0 bottom-0 bg-primary rounded-full transition-all group-hover:bg-primary/80"
                         style={{ width: `${volume * 100}%` }}
                     />
                 </div>

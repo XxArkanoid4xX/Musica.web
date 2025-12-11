@@ -35,20 +35,20 @@ export function Navbar() {
     };
 
     return (
-        <header className="sticky top-0 z-40 flex w-full items-center justify-between px-6 py-4 glass">
+        <header className="sticky top-0 z-40 flex w-full items-center justify-between px-6 py-4 glass bg-background/40 backdrop-blur-md border-b border-white/5">
             {/* Left: Navigation Controls */}
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-black/20 hover:bg-black/40 text-muted-foreground hover:text-white" disabled>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-accent/50 hover:bg-accent text-muted-foreground hover:text-foreground" disabled>
                         <ChevronLeft className="h-5 w-5" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-black/20 hover:bg-black/40 text-muted-foreground hover:text-white" disabled>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-accent/50 hover:bg-accent text-muted-foreground hover:text-foreground" disabled>
                         <ChevronRight className="h-5 w-5" />
                     </Button>
                 </div>
 
                 {/* Simple Breadcrumb / Title */}
-                <h1 className="ml-2 text-lg font-bold tracking-tight hidden md:block text-white/90">
+                <h1 className="ml-2 text-lg font-bold tracking-tight hidden md:block text-foreground/90">
                     {getPageTitle()}
                 </h1>
             </div>
@@ -57,14 +57,14 @@ export function Navbar() {
             <div className="flex items-center gap-4">
                 <NotificationsMenu />
 
-                <div className="flex items-center gap-3 pl-2 border-l border-white/10">
+                <div className="flex items-center gap-3 pl-2 border-l border-border">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <div className="flex items-center gap-3 cursor-pointer group">
-                                <span className="hidden text-sm font-medium text-white/80 md:inline-block group-hover:text-white transition-colors">
+                                <span className="hidden text-sm font-medium text-foreground/80 md:inline-block group-hover:text-foreground transition-colors">
                                     {profile.name}
                                 </span>
-                                <Avatar className="h-9 w-9 border border-white/10 transition-transform group-hover:scale-105">
+                                <Avatar className="h-9 w-9 border border-border transition-transform group-hover:scale-105">
                                     <AvatarImage src={profile.avatarUrl} alt={profile.name} />
                                     <AvatarFallback className="bg-primary/20 text-primary">
                                         <User className="h-4 w-4" />
@@ -72,23 +72,23 @@ export function Navbar() {
                                 </Avatar>
                             </div>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 glass border-white/10 text-white bg-black/80 backdrop-blur-xl">
+                        <DropdownMenuContent align="end" className="w-56 bg-popover border-border">
                             <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-white/10" />
+                            <DropdownMenuSeparator />
                             <Link href="/profile">
-                                <DropdownMenuItem className="cursor-pointer hover:bg-white/10 focus:bg-white/10">
+                                <DropdownMenuItem className="cursor-pointer">
                                     <User className="mr-2 h-4 w-4" />
                                     <span>Perfil</span>
                                 </DropdownMenuItem>
                             </Link>
                             <Link href="/settings">
-                                <DropdownMenuItem className="cursor-pointer hover:bg-white/10 focus:bg-white/10">
+                                <DropdownMenuItem className="cursor-pointer">
                                     <Settings className="mr-2 h-4 w-4" />
                                     <span>Ajustes</span>
                                 </DropdownMenuItem>
                             </Link>
-                            <DropdownMenuSeparator className="bg-white/10" />
-                            <DropdownMenuItem className="cursor-pointer text-red-400 hover:text-red-300 hover:bg-red-900/20 focus:bg-red-900/20">
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer text-red-500 hover:text-red-600 focus:text-red-600">
                                 Cerrar Sesión
                             </DropdownMenuItem>
                         </DropdownMenuContent>
