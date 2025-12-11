@@ -2,6 +2,8 @@
 
 import { Bell, Volume2, Globe, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { useSettingsStore } from "@/store/settings-store";
 
 function SettingSection({ title, children }: { title: string, children: React.ReactNode }) {
     return (
@@ -33,54 +35,139 @@ function SettingItem({ icon: Icon, title, description, action }: any) {
     )
 }
 
+const translations = {
+    en: {
+        title: "Settings",
+        audio: "Audio Preference",
+        quality: "Audio Quality",
+        qualityDesc: "Stream in High Fidelity (Hi-Fi) when available",
+        normalize: "Normalize Volume",
+        normalizeDesc: "Set the same volume level for all tracks",
+        appearance: "Appearance",
+        dark: "Dark Mode",
+        darkDesc: "Use dark theme across the application",
+        lang: "Language",
+        langDesc: "Choose your preferred language",
+        notif: "Notifications",
+        push: "Push Notifications",
+        pushDesc: "Get notified about new releases",
+        about: "About",
+        high: "High",
+        normal: "Normal"
+    },
+    es: {
+        title: "Ajustes",
+        audio: "Preferencias de Audio",
+        quality: "Calidad de Audio",
+        qualityDesc: "Reproducir en Alta Fidelidad (Hi-Fi) cuando esté disponible",
+        normalize: "Normalizar Volumen",
+        normalizeDesc: "Establecer el mismo nivel de volumen para todas las pistas",
+        appearance: "Apariencia",
+        dark: "Modo Oscuro",
+        darkDesc: "Usar tema oscuro en la aplicación",
+        lang: "Idioma",
+        langDesc: "Elige tu idioma preferido",
+        notif: "Notificaciones",
+        push: "Notificaciones Push",
+        pushDesc: "Recibe notificaciones sobre nuevos lanzamientos",
+        about: "Acerca de",
+        high: "Alta",
+        normal: "Normal"
+    }
+};
+
 export default function SettingsPage() {
+    const {
+        audioQuality, setAudioQuality,
+        normalizeVolume, toggleNormalizeVolume,
+        darkMode, toggleDarkMode,
+        language, setLanguage,
+        notifications, toggleNotifications
+    } = useSettingsStore();
+
+    const t = translations[language];
+
     return (
         <div className="max-w-4xl mx-auto pb-10">
-            <h1 className="text-3xl font-bold font-heading mb-8">Settings</h1>
+            <h1 className="text-3xl font-bold font-heading mb-8">{t.title}</h1>
 
-            <SettingSection title="Audio Preference">
+            <SettingSection title={t.audio}>
                 <SettingItem
                     icon={Volume2}
-                    title="Audio Quality"
-                    description="Stream in High Fidelity (Hi-Fi) when available"
-                    action={<Button variant="outline" size="sm">High</Button>}
+                    title={t.quality}
+                    description={t.qualityDesc}
+                    action={
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setAudioQuality(audioQuality === 'high' ? 'normal' : 'high')}
+                            className="w-24"
+                        >
+                            {audioQuality === 'high' ? t.high : t.normal}
+                        </Button>
+                    }
                 />
                 <SettingItem
                     icon={Volume2}
-                    title="Normalize Volume"
-                    description="Set the same volume level for all tracks"
-                    action={<div className="h-6 w-11 bg-primary rounded-full relative cursor-pointer"><div className="absolute right-1 top-1 h-4 w-4 bg-white rounded-full" /></div>}
+                    title={t.normalize}
+                    description={t.normalizeDesc}
+                    action={
+                        <Switch
+                            checked={normalizeVolume}
+                            onCheckedChange={toggleNormalizeVolume}
+                        />
+                    }
                 />
             </SettingSection>
 
-            <SettingSection title="Appearance">
+            <SettingSection title={t.appearance}>
                 <SettingItem
                     icon={Moon}
-                    title="Dark Mode"
-                    description="Use dark theme across the application"
-                    action={<div className="h-6 w-11 bg-primary rounded-full relative cursor-pointer"><div className="absolute right-1 top-1 h-4 w-4 bg-white rounded-full" /></div>}
+                    title={t.dark}
+                    description={t.darkDesc}
+                    action={
+                        <Switch
+                            checked={darkMode}
+                            onCheckedChange={toggleDarkMode}
+                        />
+                    }
                 />
                 <SettingItem
                     icon={Globe}
-                    title="Language"
-                    description="Choose your preferred language"
-                    action={<Button variant="outline" size="sm">English</Button>}
+                    title={t.lang}
+                    description={t.langDesc}
+                    action={
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
+                            className="w-24"
+                        >
+                            {language === 'en' ? 'English' : 'Español'}
+                        </Button>
+                    }
                 />
             </SettingSection>
 
-            <SettingSection title="Notifications">
+            <SettingSection title={t.notif}>
                 <SettingItem
                     icon={Bell}
-                    title="Push Notifications"
-                    description="Get notified about new releases"
-                    action={<div className="h-6 w-11 bg-zinc-700 rounded-full relative cursor-pointer"><div className="absolute left-1 top-1 h-4 w-4 bg-white rounded-full" /></div>}
+                    title={t.push}
+                    description={t.pushDesc}
+                    action={
+                        <Switch
+                            checked={notifications}
+                            onCheckedChange={toggleNotifications}
+                        />
+                    }
                 />
             </SettingSection>
 
-            <SettingSection title="About">
-                <div className="p-4 text-center text-muted-foreground text-sm">
-                    <p>Musica.web v1.0.0</p>
+            <SettingSection title={t.about}>
+                <div className="p-4 text-center text-muted-foreground text-sm flex flex-col gap-1">
+                    <p className="font-bold text-white">Músic-AI v1.0.0 Alpha</p>
                     <p>Designed with ❤️ by Antigravity</p>
+                    <p className="text-xs mt-2 opacity-50">Session ID: {Math.random().toString(36).substring(7)}</p>
                 </div>
             </SettingSection>
         </div>
