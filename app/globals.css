@@ -4,20 +4,53 @@
 
 @layer base {
   :root {
-    /* Premium Purple-Dark Palette */
+    /* LIGHT MODE (White & Purple) */
+    --background: 280 30% 98%;
+    /* #fbf7fd - Casi blanco */
+    --foreground: 260 40% 10%;
+    /* Texto oscuro */
+
+    --card: 0 0% 100%;
+    --card-foreground: 260 40% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 40% 10%;
+
+    --primary: 270 95% 60%;
+    /* Morado intenso */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 20% 96%;
+    --secondary-foreground: 260 40% 10%;
+
+    --muted: 270 20% 96%;
+    --muted-foreground: 260 10% 45%;
+
+    --accent: 270 30% 96%;
+    --accent-foreground: 260 40% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 270 20% 90%;
+    --input: 270 20% 90%;
+    --ring: 270 95% 60%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    /* DARK MODE (Black & Purple) */
     --background: 260 30% 6%;
-    /* Casi negro con tinte morado muy oscuro */
     --foreground: 0 0% 98%;
 
     --card: 260 25% 10%;
-    /* Ligeramente más claro para tarjetas */
     --card-foreground: 0 0% 98%;
 
     --popover: 260 30% 6%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 270 95% 65%;
-    /* Morado vibrante eléctrico */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 260 20% 15%;
@@ -33,12 +66,8 @@
     --destructive-foreground: 0 0% 98%;
 
     --border: 260 20% 15%;
-    /* Bordes sutiles morados */
     --input: 260 20% 15%;
     --ring: 270 95% 65%;
-
-    --radius: 1rem;
-    /* Bordes más redondeados y modernos */
   }
 }
 
@@ -49,16 +78,25 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    /* Fondo con gradientes de luz morada y dorada (User Requested) */
+
+    /* Fondo LIGHT por defecto (Blanco y Morado suave) */
+    background-color: #fbf7fd;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 60%),
+      radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.1) 0px, transparent 60%);
+    background-attachment: fixed;
+    background-size: cover;
+    transition: background-color 0.5s ease;
+  }
+
+  /* Fondo DARK cuando la clase .dark está presente */
+  .dark body {
     background-color: #430a5d;
     background-image:
       radial-gradient(at 48% 32%, #430a5d 0%, transparent 60%),
       radial-gradient(at 69% 44%, #5f374b 0%, transparent 50%),
       radial-gradient(at 71% 51%, #8c6a5d 0%, transparent 40%),
       radial-gradient(at 95% 44%, #eee4b1 0%, transparent 30%);
-    background-attachment: fixed;
-    /* Mantiene el fondo fijo al scrollear */
-    background-size: cover;
   }
 
   /* Custom Scrollbar for sleek look */
