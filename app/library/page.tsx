@@ -20,6 +20,8 @@ export default function LibraryPage() {
         // For now just empty or could link to logic
     };
 
+    const preferences = (profile as any).preferences;
+
     return (
         <div className="flex flex-col gap-8 pb-8">
             {/* Header */}
@@ -31,20 +33,20 @@ export default function LibraryPage() {
             </div>
 
             {/* Musical Taste Section (New) */}
-            {(profile.preferences?.genres?.length > 0 || profile.preferences?.artists?.length > 0) && (
+            {(preferences?.genres?.length > 0 || preferences?.artists?.length > 0) && (
                 <section className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <h2 className="text-xl font-bold font-heading flex items-center gap-2">
                         <Heart className="h-5 w-5 text-red-500 fill-red-500" /> Your Taste
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Genres */}
-                        {profile.preferences.genres.length > 0 && (
+                        {preferences.genres.length > 0 && (
                             <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-white/10 rounded-xl p-6">
                                 <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-300 mb-4 flex items-center gap-2">
                                     <Music className="h-4 w-4" /> Favorite Genres
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
-                                    {profile.preferences.genres.map(genre => (
+                                    {preferences.genres.map((genre: string) => (
                                         <span key={genre} className="px-3 py-1 rounded-full bg-white/10 text-sm font-medium border border-white/5">
                                             {genre}
                                         </span>
@@ -54,13 +56,13 @@ export default function LibraryPage() {
                         )}
 
                         {/* Artists */}
-                        {profile.preferences.artists.length > 0 && (
+                        {preferences.artists.length > 0 && (
                             <div className="bg-gradient-to-br from-pink-900/40 to-rose-900/40 border border-white/10 rounded-xl p-6">
                                 <h3 className="text-sm font-semibold uppercase tracking-wider text-pink-300 mb-4 flex items-center gap-2">
                                     <Mic2 className="h-4 w-4" /> Favorite Artists
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
-                                    {profile.preferences.artists.map(artist => (
+                                    {preferences.artists.map((artist: string) => (
                                         <span key={artist} className="px-3 py-1 rounded-full bg-white/10 text-sm font-medium border border-white/5">
                                             {artist}
                                         </span>
