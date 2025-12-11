@@ -53,8 +53,7 @@ export function NeonBackground() {
                 />
             ))}
 
-            {/* Soft global ambient glow */}
-            <div className="absolute inset-0 bg-background/0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-background/0 to-background/0" />
+
 
             <style jsx>{`
                 @keyframes twinkle {

@@ -49,14 +49,13 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    /* Fondo con gradientes de luz morada ("Aurora Boreal" oscura) */
-    background-color: #050308;
-    /* Fallback */
+    /* Fondo con gradientes de luz morada y dorada (User Requested) */
+    background-color: #430a5d;
     background-image:
-      radial-gradient(at 0% 0%, rgba(88, 28, 135, 0.45) 0px, transparent 50%),
-      radial-gradient(at 90% 10%, rgba(124, 58, 237, 0.35) 0px, transparent 50%),
-      radial-gradient(at 20% 80%, rgba(139, 92, 246, 0.25) 0px, transparent 50%),
-      radial-gradient(at 80% 90%, rgba(76, 29, 149, 0.4) 0px, transparent 50%);
+      radial-gradient(at 48% 32%, #430a5d 0%, transparent 60%),
+      radial-gradient(at 69% 44%, #5f374b 0%, transparent 50%),
+      radial-gradient(at 71% 51%, #8c6a5d 0%, transparent 40%),
+      radial-gradient(at 95% 44%, #eee4b1 0%, transparent 30%);
     background-attachment: fixed;
     /* Mantiene el fondo fijo al scrollear */
     background-size: cover;
