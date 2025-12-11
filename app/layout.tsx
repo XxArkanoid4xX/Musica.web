@@ -8,6 +8,7 @@ import { OnboardingModal } from '@/components/onboarding/onboarding-modal';
 import { IntroAnimation } from '@/components/shared/intro-animation';
 import { NeonBackground } from '@/components/shared/neon-background';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { FullScreenPlayer } from '@/components/player/full-screen-player';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -52,6 +53,7 @@ export default function RootLayout({
 
                             {/* Player Bar Overlay */}
                             <PlayerBar />
+                            <FullScreenPlayer />
                             <OnboardingModal />
                         </div>
                     </div>

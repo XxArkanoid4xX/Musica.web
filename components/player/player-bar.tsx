@@ -28,7 +28,8 @@ export function PlayerBar() {
         playNext,
         playPrevious,
         queue,
-        currentIndex
+        currentIndex,
+        toggleFullScreen
     } = usePlayerStore();
 
     const { toggleLike, checkIsLiked } = useLibraryStore();
@@ -58,7 +59,7 @@ export function PlayerBar() {
                     size="icon"
                     variant="ghost"
                     className={cn("text-muted-foreground hover:text-primary shrink-0 ml-2", isLiked && "text-primary hover:text-primary/80")}
-                    onClick={() => toggleLike(currentTrack)}
+                    onClick={() => toggleLike(currentTrack as any)}
                 >
                     <Heart className={cn("h-5 w-5", isLiked && "fill-current")} />
                 </Button>
@@ -125,7 +126,14 @@ export function PlayerBar() {
                         style={{ width: `${volume * 100}%` }}
                     />
                 </div>
-                <Maximize2 className="h-4 w-4 text-muted-foreground" />
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-muted-foreground hover:text-primary"
+                    onClick={toggleFullScreen}
+                >
+                    <Maximize2 className="h-4 w-4" />
+                </Button>
             </div>
         </div>
     );
