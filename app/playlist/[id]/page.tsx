@@ -138,9 +138,31 @@ export default function PlaylistPage({ params }: { params: Promise<{ id: string 
                         priority
                     />
                     {displayData.isOwner && (
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-xs font-bold text-white">Change Image</span>
-                        </div>
+                        <label className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer">
+                            <Pen className="h-8 w-8 text-white mb-2" />
+                            <span className="text-sm font-bold text-white">Change Cover</span>
+                            <input
+                                type="file"
+                                className="hidden"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file && localPlaylist) {
+                                        if (file.size > 2 * 1024 * 1024) {
+                                            alert("Image size must be less than 2MB");
+                                            return;
+                                        }
+                                        const reader = new FileReader();
+                                        reader.onload = (ev) => {
+                                            if (typeof ev.target?.result === 'string') {
+                                                updatePlaylist(localPlaylist.id, { coverUrl: ev.target.result });
+                                            }
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }}
+                            />
+                        </label>
                     )}
                 </div>
                 <div className="flex flex-col gap-2 w-full">
