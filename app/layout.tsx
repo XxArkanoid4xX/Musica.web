@@ -15,6 +15,9 @@ import './globals.css';
 export const metadata: Metadata = {
     title: 'Musica.web | High-End Audio Streaming',
     description: 'A futuristic music experience designed for audiophiles.',
+    icons: {
+        icon: '/icon.svg',
+    },
 };
 
 export default function RootLayout({
