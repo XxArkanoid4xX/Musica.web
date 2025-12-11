@@ -23,7 +23,7 @@ export function ArtworkCard({
     return (
         <div
             className={cn(
-                "group relative flex flex-col gap-3 rounded-xl p-3 transition-all hover:bg-white/5 cursor-pointer",
+                "group relative flex flex-col gap-3 rounded-xl p-3 transition-all hover:bg-accent cursor-pointer",
                 className
             )}
             {...props}
@@ -51,7 +51,7 @@ export function ArtworkCard({
             </div>
 
             <div className="flex flex-col gap-1">
-                <h3 className="font-medium truncate text-white block">{title}</h3>
+                <h3 className="font-medium truncate text-foreground block">{title}</h3>
                 <p className="line-clamp-2 text-sm text-muted-foreground">{subtitle}</p>
             </div>
         </div>

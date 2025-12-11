@@ -14,7 +14,7 @@ export function DailyMixCard({ title, coverUrl, accentColor = "bg-zinc-800", isP
     return (
         <div
             onClick={onPlay}
-            className="group relative flex h-20 w-full cursor-pointer items-center gap-4 overflow-hidden rounded-lg bg-white/5 pr-4 transition-all hover:bg-white/10 hover:scale-[1.02]"
+            className="group relative flex h-20 w-full cursor-pointer items-center gap-4 overflow-hidden rounded-lg bg-card border border-border/50 pr-4 transition-all hover:bg-accent hover:scale-[1.02] shadow-sm"
         >
             <div className="relative h-full aspect-square">
                 <Image
@@ -25,7 +25,7 @@ export function DailyMixCard({ title, coverUrl, accentColor = "bg-zinc-800", isP
                 />
             </div>
 
-            <span className={cn("flex-1 font-bold text-sm line-clamp-2", isPlaying ? "text-primary" : "text-white")}>
+            <span className={cn("flex-1 font-bold text-sm line-clamp-2 text-foreground", isPlaying && "text-primary")}>
                 {title}
             </span>
 
