@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Bell, Volume2, Globe, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -85,6 +86,12 @@ export default function SettingsPage() {
         notifications, toggleNotifications
     } = useSettingsStore();
 
+    const [sessionId, setSessionId] = useState("");
+
+    useEffect(() => {
+        setSessionId(Math.random().toString(36).substring(7));
+    }, []);
+
     const t = translations[language];
 
     return (
@@ -167,7 +174,7 @@ export default function SettingsPage() {
                 <div className="p-4 text-center text-muted-foreground text-sm flex flex-col gap-1">
                     <p className="font-bold text-white">Músic-AI v1.0.0 Alpha</p>
                     <p>Designed with ❤️ by Antigravity</p>
-                    <p className="text-xs mt-2 opacity-50">Session ID: {Math.random().toString(36).substring(7)}</p>
+                    {sessionId && <p className="text-xs mt-2 opacity-50">Session ID: {sessionId}</p>}
                 </div>
             </SettingSection>
         </div>
